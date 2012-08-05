@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <stdlib.h>
 #include "trim.hxx"
 #include "contains.hxx"
 #include "system.hxx"
@@ -31,7 +32,8 @@ int main (int argc, char* argv[])
     /* lddgraph options */
     string input = argv[argc - 1];
     string basename = input.substr(input.find_last_of('/') + 1);
-    string output = basename + ".deps.gv";
+    string gvoutput = basename + ".deps.gv";
+    string imgoutput = basename + ".deps.jpg";
     string format = "jpg";
     vector<string> ignoreList;
     bool verbose = false;
@@ -55,7 +57,7 @@ int main (int argc, char* argv[])
         {
             i++;
             if (i > argc)
-                output = argv[i];
+                imgoutput = argv[i];
         }
         else if (strncmp(argv[i], "-i", arglen) == 0)
         {
@@ -74,10 +76,10 @@ int main (int argc, char* argv[])
     }
 
     ofstream graphStream;
-    graphStream.open(output.c_str());
+    graphStream.open(gvoutput.c_str());
     if (!graphStream.is_open())
     {
-        cout << "Error: Can't open file " << output << endl;
+        cout << "Error: Can't open file " << gvoutput << endl;
         return 0;
     }
 
@@ -91,9 +93,10 @@ int main (int argc, char* argv[])
     graphStream.flush();
     graphStream.close();
 
-    string dotCMD = "dot -T" + format + " -o" + basename + ".deps.jpg " + output;
-    system(dotCMD);
-
+    string dotCMD = "dot -T" + format + " -o" + imgoutput + " " + gvoutput;
+    string displayCMD = "display " + imgoutput;
+    system(dotCMD.c_str());
+    system(displayCMD.c_str());
     return 0;
 }
 
