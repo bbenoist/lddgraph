@@ -7,13 +7,16 @@ linked binaries using ldd and Graphviz.
 Feel free to use, modify, contribute and redistribute this code.
 
 Usage:  
-  lddgraph [OPTION...] file
+  lddgraph [options] file
 
 Options:  
-  -f <format>   Output graph format 'dot -T?' for a complete list.  
-  -o <file>     Output file.  
   -i <library>  Ignore a specific library.  
-  -v Verbose mode
+  -e <file>     Export image file.  
+  -f <format>   Output image format. Use 'dot -T?' for a complete list.  
+  -g <file>     Export Graphviz diagram.  
+  -t            Use LD_TRACE_LOADED_OBJECTS instead of ldd.  
+  -q            Quiet mode.  
+  -v            Verbose mode.
 
 *This code is licensed under the terms specified in the LICENSE.BSD file.*
 
