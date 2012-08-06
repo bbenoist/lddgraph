@@ -4,6 +4,7 @@
 #include "trim.hxx"
 #include "contains.hxx"
 #include "system.hxx"
+#include "wildcardcompare.hxx"
 
 #include <iostream>
 #include <fstream>
@@ -25,8 +26,10 @@ class lddgraph
     bool _quiet; // True to only display error messages
     bool _verbose; // Displays every information available
     vector<string> _ignorelist; // List of libraries to ignore
+    vector<string> _ignorepatterns; // List of file path patterns to ignore
 
   public:
+    // lddgraph Constructor
     lddgraph(string input)
     {
       _input = input;
@@ -39,106 +42,6 @@ class lddgraph
       _useldd = true;
       _quiet = false;
       _verbose = false;
-    }
-
-    const string & getinput()
-    {
-      return _input;
-    }
-
-    void setinput(const string & input)
-    {
-      _input = input;
-    }
-
-    const vector<string> & getignorelist()
-    {
-      return _ignorelist;
-    }
-
-    void setignorelist(vector<string> ignorelist)
-    {
-      _ignorelist = ignorelist;
-    }
-
-    bool getimgmode()
-    {
-      return _imgmode;
-    }
-
-    void setimgmode(bool imgmode)
-    {
-      _imgmode = imgmode;
-    }
-
-    const string & getimgoutput()
-    {
-      return _imgoutput;
-    }
-
-    void setimgoutput(const string & imgoutput)
-    {
-      _imgoutput = imgoutput;
-    }
-
-    const string & getimgformat()
-    {
-      return _imgformat;
-    }
-
-    void setimgformat(const string & imgformat)
-    {
-      _imgformat = imgformat;
-    }
-
-    bool getgvmode()
-    {
-      return _gvmode;
-    }
-
-    void setgvmode(bool gvmode)
-    {
-      _gvmode = gvmode;
-    }
-
-    const string & getgvoutput()
-    {
-      return _gvoutput;
-    }
-
-    void setgvoutput(const string & gvoutput)
-    {
-      _gvoutput = gvoutput;
-    }
-
-    bool getuseldd()
-    {
-      return _useldd;
-    }
-
-    void setuseldd(bool useldd)
-    {
-      _useldd = useldd;
-    }
-
-    bool getquiet()
-    {
-      return _quiet;
-    }
-
-    void setquiet(bool quiet)
-    {
-      _quiet = quiet;
-    }
-
-    bool getverbose()
-    {
-      return _verbose;
-    }
-
-    void setverbose(bool verbose)
-    {
-      _verbose = verbose;
     }
 
   private:
@@ -166,7 +69,8 @@ class lddgraph
       for (int i = 0; i < libraries.size(); i++)
       {
         if (libraries[i].size() == 0
-            || contains(_ignorelist, libraries[i]))
+            || contains(_ignorelist, libraries[i])
+            || wildcardcontains(_ignorepatterns, libraries[i]))
           continue;
         gvstream << "\t\"" << file << "\" -> \"" << libraries[i] << "\""
           << endl;
@@ -267,6 +171,117 @@ class lddgraph
       if (_verbose)
         cout << "Deleting file " << _imgoutput << endl;
       return removefile(_imgoutput);
+    }
+
+    /* Getters / Setters */
+    const string & getinput()
+    {
+      return _input;
+    }
+
+    void setinput(const string & input)
+    {
+      _input = input;
+    }
+
+    const vector<string> & getignorelist()
+    {
+      return _ignorelist;
+    }
+
+    void setignorelist(vector<string> ignorelist)
+    {
+      _ignorelist = ignorelist;
+    }
+
+    const vector<string> & getignorepatterns()
+    {
+      return _ignorepatterns;
+    }
+
+    void setignorepatterns(vector<string> ignorepatterns)
+    {
+      _ignorepatterns = ignorepatterns;
+    }
+
+    bool getimgmode()
+    {
+      return _imgmode;
+    }
+
+    void setimgmode(bool imgmode)
+    {
+      _imgmode = imgmode;
+    }
+
+    const string & getimgoutput()
+    {
+      return _imgoutput;
+    }
+
+    void setimgoutput(const string & imgoutput)
+    {
+      _imgoutput = imgoutput;
+    }
+
+    const string & getimgformat()
+    {
+      return _imgformat;
+    }
+
+    void setimgformat(const string & imgformat)
+    {
+      _imgformat = imgformat;
+    }
+
+    bool getgvmode()
+    {
+      return _gvmode;
+    }
+
+    void setgvmode(bool gvmode)
+    {
+      _gvmode = gvmode;
+    }
+
+    const string & getgvoutput()
+    {
+      return _gvoutput;
+    }
+
+    void setgvoutput(const string & gvoutput)
+    {
+      _gvoutput = gvoutput;
+    }
+
+    bool getuseldd()
+    {
+      return _useldd;
+    }
+
+    void setuseldd(bool useldd)
+    {
+      _useldd = useldd;
+    }
+
+    bool getquiet()
+    {
+      return _quiet;
+    }
+
+    void setquiet(bool quiet)
+    {
+      _quiet = quiet;
+    }
+
+    bool getverbose()
+    {
+      return _verbose;
+    }
+
+    void setverbose(bool verbose)
+    {
+      _verbose = verbose;
     }
 };
 

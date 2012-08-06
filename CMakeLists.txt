@@ -8,6 +8,7 @@ add_executable (lddgraph
   contains.hxx
   system.hxx
   help.hxx
+  wildcardcompare.hxx
   lddgraph.hxx
 )
 

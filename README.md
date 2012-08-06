@@ -11,12 +11,16 @@ Usage:
 
 Options:  
   -i <library>  Ignore a specific library.  
+  -I <text>     Ignore libraries when their path contains the text.  
   -e <file>     Export image file.  
   -f <format>   Output image format. Use 'dot -T?' for a complete list.  
   -g <file>     Export Graphviz diagram.  
   -t            Use LD_TRACE_LOADED_OBJECTS instead of ldd.  
   -q            Quiet mode.  
   -v            Verbose mode.
+
+For bug reporting instructions, please see:  
+https://github.com/bbenoist/lddgraph/issues
 
 *This code is licensed under the terms specified in the LICENSE.BSD file.*
 

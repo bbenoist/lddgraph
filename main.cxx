@@ -37,6 +37,17 @@ int main (int argc, char* argv[])
         lddg.setignorelist(ignorelist);
       }
     }
+    else if (strncmp(argv[i], "-I", arglen) == 0)
+    {
+      i++;
+      if (i < argc)
+      {
+        vector<string> ignorepatterns = lddg.getignorepatterns();
+        string val = argv[i];
+        ignorepatterns.push_back(trim(val));
+        lddg.setignorepatterns(ignorepatterns);
+      }
+    }
     else if (strncmp(argv[i], "-e", arglen) == 0)
     {
       lddg.setimgmode(true);

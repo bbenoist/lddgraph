@@ -12,6 +12,8 @@ void help()
         << "  lddgraph [options] file" << endl
         << "Options:" << endl
         << "  -i <library>\tIgnore a specific library." << endl
+        << "  -I <text>\tIgnore libraries when their path contains the text."
+        << endl
         << "  -e <file>\tExport image file." << endl
         << "  -f <format>\tOutput image format. Use 'dot -T?' for a"
         << " complete list." << endl

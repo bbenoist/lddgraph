@@ -8,6 +8,7 @@ Usage:
 
 Options:
   -i <library>  Ignore a specific library.
+  -I <text>     Ignore libraries when their path contains the text.
   -e <file>     Export image file.
   -f <format>   Output image format. Use 'dot -T?' for a complete list.
   -g <file>     Export Graphviz diagram.
