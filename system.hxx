@@ -1,6 +1,11 @@
 #ifndef system_HXX
 #define system_HXX
 
+#include <string>
+#include <stdio.h>
+
+using namespace std;
+
 // Invokes a system command and returns its console output
 string system(const string & command)
 {
