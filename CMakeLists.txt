@@ -12,3 +12,5 @@ add_executable (lddgraph
   lddgraph.hxx
 )
 
+install(TARGETS lddgraph DESTINATION bin)
+
