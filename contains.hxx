@@ -21,4 +21,3 @@ static inline bool contains(string str, string element)
 }
 
 #endif /* contains_HXX */
-

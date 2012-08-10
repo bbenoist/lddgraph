@@ -7,7 +7,7 @@
 using namespace std;
 
 // Invokes a system command and returns its console output
-string system(const string & command)
+static inline string system(const string & command)
 {
   string coutput;
   FILE *cmd = popen(command.c_str(), "r");
@@ -18,5 +18,4 @@ string system(const string & command)
   return coutput;
 }
 
-#endif
-
+#endif /* system_HXX */

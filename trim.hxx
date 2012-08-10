@@ -30,4 +30,3 @@ static inline string & trim(string & s)
 }
 
 #endif /* trim_HXX */
-

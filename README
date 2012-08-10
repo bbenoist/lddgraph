@@ -30,4 +30,3 @@ Use the make install command if you want to install lddgraph to the
 CMAKE_INSTALL_PREFIX directory. You can use the
 -DCMAKE_INSTALL_PREFIX:PATH=/your/path option to configure cmake with your
 preferred one.
-

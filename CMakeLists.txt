@@ -13,4 +13,3 @@ add_executable (lddgraph
 )
 
 install(TARGETS lddgraph DESTINATION bin)
-

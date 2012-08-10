@@ -1,11 +1,11 @@
-#ifndef wildcardcompare_H
-#define wildcardcompare_H
+#ifndef wildcardcompare_HXX
+#define wildcardcompare_HXX
 
 #include <string>
 #include <vector>
 
 // Compares a string with a search term
-bool wildcardcompare(string searchterm, string checkagaints)
+static inline bool wildcardcompare(string searchterm, string checkagaints)
 {
   bool found = false;
   vector < string > parts;
@@ -64,7 +64,7 @@ bool wildcardcompare(string searchterm, string checkagaints)
 }
 
 // Compares a string with a list of search terms
-bool wildcardcontains(vector<string> vect, string checkagaints)
+static inline bool wildcardcontains(vector<string> vect, string checkagaints)
 {
   vector<string>::const_iterator vectit = vect.begin(), vectend = vect.end();
   while (vectit != vectend)
@@ -76,5 +76,4 @@ bool wildcardcontains(vector<string> vect, string checkagaints)
   return false;
 }
 
-#endif
-
+#endif /* wildcardcompare_HXX */

@@ -6,7 +6,7 @@
 using namespace std;
 
 // Prints help on the console output
-void help()
+static inline void help()
 {
   cout << "Usage:" << endl;
   cout << "  lddgraph [options] file" << endl;
@@ -26,4 +26,3 @@ void help()
 }
 
 #endif /* help_HXX */
-

@@ -285,4 +285,3 @@ class lddgraph
 };
 
 #endif /* lddgraph_HXX */
-
