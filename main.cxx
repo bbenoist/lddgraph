@@ -6,7 +6,7 @@
 using namespace std;
 
 // Entry point for lddgraph
-int main (int argc, char* argv[])
+int main(int argc, char* argv[])
 {
   /* Prints output when no arguments where specified */
   if (argc < 2)
@@ -68,15 +68,15 @@ int main (int argc, char* argv[])
       if (i < argc)
         lddg.setgvoutput(argv[i]);
     }
-    else if(strncmp(argv[i], "-t", arglen) == 0)
+    else if (strncmp(argv[i], "-t", arglen) == 0)
     {
       lddg.setuseldd(false);
     }
-    else if(strncmp(argv[i], "-q", arglen) == 0)
+    else if (strncmp(argv[i], "-q", arglen) == 0)
     {
       lddg.setquiet(true);
     }
-    else if(strncmp(argv[i], "-v", arglen) == 0)
+    else if (strncmp(argv[i], "-v", arglen) == 0)
     {
       lddg.setverbose(true);
     }

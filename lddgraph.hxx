@@ -59,7 +59,7 @@ class lddgraph
 
     // Recursively write dependencies
     void lddrecurse(string file, vector<string> & alreadyscanned,
-                    ofstream & gvstream)
+        ofstream & gvstream)
     {
       if (!_quiet)
         cout << "Scanning file " << file << endl;
@@ -68,12 +68,11 @@ class lddgraph
       alreadyscanned.push_back(file);
       for (int i = 0; i < libraries.size(); i++)
       {
-        if (libraries[i].size() == 0
-            || contains(_ignorelist, libraries[i])
+        if (libraries[i].size() == 0 || contains(_ignorelist, libraries[i])
             || wildcardcontains(_ignorepatterns, libraries[i]))
           continue;
         gvstream << "\t\"" << file << "\" -> \"" << libraries[i] << "\""
-          << endl;
+            << endl;
         if (contains(alreadyscanned, libraries[i]))
           continue;
         lddrecurse(libraries[i], alreadyscanned, gvstream);

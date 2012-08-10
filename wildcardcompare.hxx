@@ -8,7 +8,7 @@
 bool wildcardcompare(string searchterm, string checkagaints)
 {
   bool found = false;
-  vector<string> parts;
+  vector < string > parts;
   string temp;
   if (searchterm == "*")
     return true;
@@ -35,7 +35,7 @@ bool wildcardcompare(string searchterm, string checkagaints)
       return false;
   }
   else
-      vectit++;
+    vectit++;
   size_t size = checkagaints.size();
   size_t pos = 0;
   size_t tempsize;
