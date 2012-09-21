@@ -1,32 +1,45 @@
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//                             lddgraph
+// Small C++ tool which creates dependencies graphs of dynamically linked
+// binaries using ldd and Graphviz.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// This code is licensed under the terms specified in the LICENSE.BSD file
+// https://github.com/bbenoist/lddgraph/blob/master/LICENSE.BSD
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #ifndef trim_HXX
 #define trim_HXX
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include <algorithm>
 #include <string>
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 using namespace std;
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// trim from start
-static inline string & ltrim(string & s)
+// Trim from start
+static inline string & ltrim(string & str)
 {
-  s.erase(s.begin(),
-      find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace))));
-  return s;
+  str.erase(str.begin(),
+      find_if(str.begin(), str.end(), not1(ptr_fun<int, int>(isspace))));
+  return str;
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// trim from end
-static inline string & rtrim(string & s)
+// Trim from end
+static inline string & rtrim(string & str)
 {
-  s.erase(
-      find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(std::isspace))).base(),
-      s.end());
-  return s;
+  str.erase(
+      find_if(str.rbegin(), str.rend(),
+          not1(ptr_fun<int, int>(std::isspace))).base(), str.end());
+  return str;
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// trim from both ends
-static inline string & trim(string & s)
+// Trim from both ends
+static inline string & trim(string & str)
 {
-  return ltrim(rtrim(s));
+  return ltrim(rtrim(str));
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #endif /* trim_HXX */
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

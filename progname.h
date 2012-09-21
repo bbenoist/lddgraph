@@ -6,28 +6,11 @@
 // This code is licensed under the terms specified in the LICENSE.BSD file
 // https://github.com/bbenoist/lddgraph/blob/master/LICENSE.BSD
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#ifndef contains_HXX
-#define contains_HXX
+#ifndef progname_h
+#define progname_h
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#include <vector>
-#include <string>
+/* The name of this program */
+const char* program_name;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-using namespace std;
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-template <typename T>
-// Returns true if the vector contains the specified value
-static inline bool contains(const vector<T> & vect, const T & val)
-{
-  return (find(vect.begin(), vect.end(), val) != vect.end());
-}
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// Returns true if the string contains the specified string element
-static inline bool contains(string str, string element)
-{
-  return string::npos != str.find(element);
-}
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#endif /* contains_HXX */
+#endif /* progname_H */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

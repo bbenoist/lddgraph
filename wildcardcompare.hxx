@@ -1,8 +1,17 @@
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//                             lddgraph
+// Small C++ tool which creates dependencies graphs of dynamically linked
+// binaries using ldd and Graphviz.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// This code is licensed under the terms specified in the LICENSE.BSD file
+// https://github.com/bbenoist/lddgraph/blob/master/LICENSE.BSD
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #ifndef wildcardcompare_HXX
 #define wildcardcompare_HXX
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include <string>
 #include <vector>
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // Compares a string with a search term
 static inline bool wildcardcompare(string searchterm, string checkagaints)
@@ -62,8 +71,9 @@ static inline bool wildcardcompare(string searchterm, string checkagaints)
   }
   return true;
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// Compares a string with a list of search terms
+/// Compares a string with a list of search terms
 static inline bool wildcardcontains(vector<string> vect, string checkagaints)
 {
   vector<string>::const_iterator vectit = vect.begin(), vectend = vect.end();
@@ -75,5 +85,6 @@ static inline bool wildcardcontains(vector<string> vect, string checkagaints)
   }
   return false;
 }
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #endif /* wildcardcompare_HXX */
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

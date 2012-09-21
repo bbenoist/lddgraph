@@ -1,97 +1,122 @@
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//                             lddgraph
+// Small C++ tool which creates dependencies graphs of dynamically linked
+// binaries using ldd and Graphviz.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// This code is licensed under the terms specified in the LICENSE.BSD file
+// https://github.com/bbenoist/lddgraph/blob/master/LICENSE.BSD
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include <string.h>
+#include <getopt.h>
+#include <unistd.h>
+#include <iostream>
+#include "progname.h"
 #include "lddgraph.hxx"
 #include "help.hxx"
-
-#include <string.h>
-
+#include "version.hxx"
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 using namespace std;
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+static const struct option longopts[] =
+{
+  { "ignore", required_argument, NULL, 'i' },
+  { "ignore-text", required_argument, NULL, 'I' },
+  { "image", required_argument, NULL, 'e' },
+  { "image-format", required_argument, NULL, 'f' },
+  { "graphviz", required_argument, NULL, 'g' },
+  { "ld-trace-loaded-objects", no_argument, NULL, 't' },
+  { "quiet", no_argument, NULL, 'q' },
+  { "verbose", no_argument, NULL, 'V' },
+  { "help", no_argument, NULL, 'h' },
+  { "version", no_argument, NULL, 'v' },
+  { "binary", required_argument, NULL, 'b' },
+  { NULL, 0, NULL, 0 }
+};
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // Entry point for lddgraph
 int main(int argc, char* argv[])
 {
+  program_name = argv[0];
+
   /* Prints output when no arguments where specified */
   if (argc < 2)
   {
-    help();
-    return 0;
+    printhelp();
+    exit(EXIT_SUCCESS);
   }
 
-  lddgraph lddg(argv[argc - 1]);
+  lddgraph lddg;
 
-  /*
-   * Arguments parsing
-   * Assuming that argv[0] is the executable path
-   */
-  for (int i = 1; i < argc - 1; i++)
+  int optc;
+  while ((optc = getopt_long (argc, argv, "b:vhi:I:e:f:g:tqV", longopts, NULL)) != -1)
   {
-    int arglen = strlen(argv[i]);
-    if (arglen < 2)
-      arglen = 2;
-    if (strncmp(argv[i], "-i", arglen) == 0)
+    switch (optc)
     {
-      i++;
-      if (i < argc)
+      case 'v':
+      {
+        printversion();
+        exit(EXIT_SUCCESS);
+      } break;
+      case 'h':
+      {
+        printhelp();
+        exit(EXIT_SUCCESS);
+      } break;
+      case 'i':
       {
         vector<string> ignorelist = lddg.getignorelist();
-        string val = argv[i];
+        string val = optarg;
         ignorelist.push_back(trim(val));
         lddg.setignorelist(ignorelist);
-      }
-    }
-    else if (strncmp(argv[i], "-I", arglen) == 0)
-    {
-      i++;
-      if (i < argc)
+      } break;
+      case 'I':
       {
         vector<string> ignorepatterns = lddg.getignorepatterns();
-        string val = argv[i];
+        string val = optarg;
         ignorepatterns.push_back(trim(val));
         lddg.setignorepatterns(ignorepatterns);
-      }
-    }
-    else if (strncmp(argv[i], "-e", arglen) == 0)
-    {
-      lddg.setimgmode(true);
-      i++;
-      if (i < argc)
-        lddg.setimgoutput(argv[i]);
-    }
-    else if (strncmp(argv[i], "-f", arglen) == 0)
-    {
-      i++;
-      if (i < argc)
-        lddg.setimgformat(argv[i]);
-    }
-    else if (strncmp(argv[i], "-g", arglen) == 0)
-    {
-      lddg.setgvmode(true);
-      i++;
-      if (i < argc)
-        lddg.setgvoutput(argv[i]);
-    }
-    else if (strncmp(argv[i], "-t", arglen) == 0)
-    {
-      lddg.setuseldd(false);
-    }
-    else if (strncmp(argv[i], "-q", arglen) == 0)
-    {
-      lddg.setquiet(true);
-    }
-    else if (strncmp(argv[i], "-v", arglen) == 0)
-    {
-      lddg.setverbose(true);
-    }
-    else // Invalid argument
-    {
-      if (!lddg.getquiet())
+      } break;
+      case 'e':
       {
-        string err = "Error: Invalid argument ";
-        perror((err + argv[i]).c_str());
-      }
-      return 0;
+        lddg.setimgmode(true);
+        lddg.setimgoutput(optarg);
+      } break;
+      case 'f':
+      {
+        lddg.setimgformat(optarg);
+      } break;
+      case 'g':
+      {
+        lddg.setgvmode(true);
+        lddg.setgvoutput(optarg);
+      } break;
+      case 't':
+      {
+        lddg.setuseldd(false);
+      } break;
+      case 'q':
+      {
+        lddg.setquiet(true);
+      } break;
+      case 'V':
+      {
+        lddg.setverbose(true);
+      } break;
+      default:
+      {
+        abort();
+      } break;
     }
   }
 
-  lddg.run();
+  lddg.setinput(argv[argc - 1]);
 
-  return 0;
+  // Start the lddgraph processing
+  if (lddg.run())
+    exit(EXIT_SUCCESS);
+  else
+    exit(EXIT_FAILURE);
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

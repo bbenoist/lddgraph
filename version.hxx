@@ -6,28 +6,26 @@
 // This code is licensed under the terms specified in the LICENSE.BSD file
 // https://github.com/bbenoist/lddgraph/blob/master/LICENSE.BSD
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#ifndef contains_HXX
-#define contains_HXX
+#ifndef version_HXX
+#define version_HXX
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#include <vector>
-#include <string>
+#include <iostream>
+#include "config.h"
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 using namespace std;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-template <typename T>
-// Returns true if the vector contains the specified value
-static inline bool contains(const vector<T> & vect, const T & val)
+/// @brief Displays the current lddgraph version
+static inline void printversion(void)
 {
-  return (find(vect.begin(), vect.end(), val) != vect.end());
+  cout << "lddgraph " << LDDGRAPH_VERSION << endl;
+  cout << LDDGRAPH_COPYRIGHT << endl;
+  cout << "This program is licensed under the terms specified in the ";
+  cout << "LICENSE.BSD file available at ";
+  cout << "<https://github.com/bbenoist/lddgraph/blob/master/LICENSE.BSD>";
+  cout << endl;
+  cout << "For bug reporting instructions, please see:" << endl;
+  cout << "<https://github.com/bbenoist/lddgraph/issues>" << endl;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// Returns true if the string contains the specified string element
-static inline bool contains(string str, string element)
-{
-  return string::npos != str.find(element);
-}
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#endif /* contains_HXX */
+#endif /* version_HXX */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

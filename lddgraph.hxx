@@ -1,16 +1,24 @@
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//                             lddgraph
+// Small C++ tool which creates dependencies graphs of dynamically linked
+// binaries using ldd and Graphviz.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// This code is licensed under the terms specified in the LICENSE.BSD file
+// https://github.com/bbenoist/lddgraph/blob/master/LICENSE.BSD
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #ifndef lddgraph_HXX
 #define lddgraph_HXX
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include <iostream>
+#include <fstream>
+#include <sstream>
 #include "trim.hxx"
 #include "contains.hxx"
 #include "system.hxx"
 #include "wildcardcompare.hxx"
-
-#include <iostream>
-#include <fstream>
-#include <sstream>
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 using namespace std;
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // lddgraph main class
 class lddgraph
@@ -29,13 +37,11 @@ class lddgraph
     vector<string> _ignorepatterns; // List of file path patterns to ignore
 
   public:
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
     // lddgraph Constructor
-    lddgraph(string input)
+    lddgraph()
     {
-      _input = input;
-      string basename = input.substr(input.find_last_of('/') + 1);
-      _gvoutput = basename + ".deps.gv";
-      _imgoutput = basename + ".deps.jpg";
       _imgformat = "jpg";
       _gvmode = false;
       _imgmode = false;
@@ -43,19 +49,23 @@ class lddgraph
       _quiet = false;
       _verbose = false;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   private:
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
     // Removes the specified file and returns true if succeed
     bool removefile(const string & file)
     {
       if (remove(file.c_str()) != 0)
       {
         if (!_quiet)
-          perror(("Error: Unable to delete file " + file).c_str());
+          cerr << "Error: Unable to delete file " << file << endl;
         return false;
       }
       return true;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     // Recursively write dependencies
     void lddrecurse(string file, vector<string> & alreadyscanned,
@@ -78,6 +88,7 @@ class lddgraph
         lddrecurse(libraries[i], alreadyscanned, gvstream);
       }
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     // Creates a graph of all the dependencies of a dynamically linked binary
     void ldd(const string & file, vector<string> & libraries)
@@ -107,15 +118,18 @@ class lddgraph
           libraries.push_back(trim(lddline));
       }
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   public:
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
     // Begin of the lddgraph process
     bool run()
     {
       if (_quiet && _verbose)
       {
-        perror("Incompatible options -s and -v, please choose one.");
-        return 0;
+        cerr << "Incompatible options -q and -V, please choose one." << endl;
+        return false;
       }
 
       if (!_quiet)
@@ -127,7 +141,7 @@ class lddgraph
       if (!gvstream.is_open())
       {
         if (!_quiet)
-          perror(("Error: Unable to open file " + _gvoutput).c_str());
+          cerr << "Error: Unable to open file " << _gvoutput << endl;
         return false;
       }
 
@@ -171,117 +185,147 @@ class lddgraph
         cout << "Deleting file " << _imgoutput << endl;
       return removefile(_imgoutput);
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     /* Getters / Setters */
     const string & getinput()
     {
       return _input;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     void setinput(const string & input)
     {
       _input = input;
+      string basename = input.substr(input.find_last_of('/') + 1);
+      if (_gvoutput.empty())
+        _gvoutput = basename + ".deps.gv";
+      if (_imgoutput.empty())
+        _imgoutput = basename + ".deps.jpg";
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     const vector<string> & getignorelist()
     {
       return _ignorelist;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     void setignorelist(vector<string> ignorelist)
     {
       _ignorelist = ignorelist;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     const vector<string> & getignorepatterns()
     {
       return _ignorepatterns;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     void setignorepatterns(vector<string> ignorepatterns)
     {
       _ignorepatterns = ignorepatterns;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     bool getimgmode()
     {
       return _imgmode;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     void setimgmode(bool imgmode)
     {
       _imgmode = imgmode;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     const string & getimgoutput()
     {
       return _imgoutput;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     void setimgoutput(const string & imgoutput)
     {
       _imgoutput = imgoutput;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     const string & getimgformat()
     {
       return _imgformat;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     void setimgformat(const string & imgformat)
     {
       _imgformat = imgformat;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     bool getgvmode()
     {
       return _gvmode;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     void setgvmode(bool gvmode)
     {
       _gvmode = gvmode;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     const string & getgvoutput()
     {
       return _gvoutput;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     void setgvoutput(const string & gvoutput)
     {
       _gvoutput = gvoutput;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     bool getuseldd()
     {
       return _useldd;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     void setuseldd(bool useldd)
     {
       _useldd = useldd;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     bool getquiet()
     {
       return _quiet;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     void setquiet(bool quiet)
     {
       _quiet = quiet;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     bool getverbose()
     {
       return _verbose;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     void setverbose(bool verbose)
     {
       _verbose = verbose;
     }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 };
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #endif /* lddgraph_HXX */
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
